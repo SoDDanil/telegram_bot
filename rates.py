@@ -35,7 +35,7 @@ headers = {
 }
 
 
-def get_rates(url):
+def get_rates(url): # функция для парсинга данных с курсом валют
     rates_dict = {
 }
     response = requests.get(url, cookies=cookies, headers=headers,timeout=30, proxies=proxies)
@@ -43,7 +43,7 @@ def get_rates(url):
     data = soup.find_all('td', class_='')
     data1 = ''
     data2 = ''
-    for value in data: 
+    for value in data:  # находим нужные данные, а имеено буквенный код, курс и количество валюты
         code = re.fullmatch('\D{3}', str(value.text))
         if code:
             data1 = value.text
@@ -52,17 +52,17 @@ def get_rates(url):
             data2 = value.text
         exchange = re.fullmatch('\d+,\d+', str(value.text))
         if exchange:
-            rates_dict[data1] = dict([(data2,value.text)])
+            rates_dict[data1] = dict([(data2,value.text)]) # сохраняем все в словарь
         
     return rates_dict    
-
-
+           
+            
 def main():
     url = 'https://www.cbr.ru/currency_base/daily/'
     rates_dict = get_rates(url = url)
     
-    strings = []
-    for key,value in rates_dict.items():
+    strings = [] 
+    for key,value in rates_dict.items(): # переделаем словарь в строку и разделителем ' - '
         for key1,value1 in value.items():
             strings.append('{} - {} - {} \n'.format(key, key1, value1 ))
     rates_string = ' '.join(strings)

@@ -1,11 +1,12 @@
 import psycopg2
+from data import *
 
 answer_id = []
 question_text = []
 answer_text = dict()
 
-def collect_data():
-    conn = psycopg2.connect(dbname='telegram_bot', user='postgres', password='0CLmtkoE65A', host='localhost')
+def collect_data(): # функция для отправки запроса к бд
+    conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host)
     cursor = conn.cursor()
 
     cursor.execute('select answer_id,answer_text from answer;')
